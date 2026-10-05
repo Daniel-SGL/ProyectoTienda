@@ -1,6 +1,7 @@
 <?php
 
 require_once("db.php");
+$conn = db::connect();
 require_once("models/User.php");
 
 session_start();
