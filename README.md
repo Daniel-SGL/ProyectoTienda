@@ -19,7 +19,7 @@ Este proyecto consiste en el diseño y desarrollo de la capa de servidor para la
 
 ## 🚀 Tecnologías Utilizadas
 
-- **Lenguaje / Framework de Servidor: PHP
+- **Lenguaje / Framework de Servidor**: PHP
 - **Base de Datos:** MariaDB
 - **Control de Versiones:** Git & GitHub
 
