@@ -2,10 +2,12 @@ CREATE DATABASE IF NOT EXISTS tienda_online CHARACTER SET utf8mb4 COLLATE utf8mb
 USE tienda_online;
 
 -- 1. Tabla Usuario
+-- Tabla Usuario (con contraseña añadida)
 CREATE TABLE Usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     direccion VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
 
