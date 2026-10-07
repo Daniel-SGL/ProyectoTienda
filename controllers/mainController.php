@@ -3,6 +3,7 @@
 require_once("db.php");
 $conn = db::connect();
 require_once("models/User.php");
+require_once("models/Product.php");
 
 session_start();
 
@@ -28,7 +29,7 @@ if (isset($_POST['login'])) {
     if (isset($_POST['correo']) && isset($_POST['password'])) {
         if ($row = $result->fetch_assoc()) {
             if ($row['password'] == md5($_POST['password'])) {
-                $_SESSION['user'] = new User($row['id'], $row['nombre'], $row['correo'], $row['direccion']);
+                $_SESSION['user'] = new User($row['nombre'], $row['correo'], $row['direccion'], $row['id']);
             } else {
                 $info = "Contraseña incorrecta";
             }
@@ -52,6 +53,23 @@ if (isset($_POST['register'])) {
             $info = "Usuario registrado correctamente";
         } else {
             $info = "Error al registrar el usuario: " . $conn->error;
+        }
+    }
+}
+
+$products = [];
+if (isset($_SESSION['user'])) {
+    $qProducts = "SELECT * FROM Producto";
+    $resultadoProducts = $conn->query($qProducts);
+
+    if($resultadoProducts){
+        while($row = $resultadoProducts->fetch_assoc()){
+            $products[] = new Product(
+                $row['nombre'],
+                $row['precio'],
+                $row['descripcion'],
+                $row['idProducto']
+            );
         }
     }
 }
