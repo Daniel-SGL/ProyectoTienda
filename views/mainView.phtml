@@ -172,6 +172,21 @@
         button:hover {
             background-color: #1d4ed8;
         }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-cart {
+            text-decoration: none;
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
     </style>
 
 <body>
@@ -179,6 +194,7 @@
         <header>
             <h2>¡Hola, <?= htmlspecialchars($_SESSION['user']->getName()) ?>!</h2>
             <a href="index.php?logout" class="logout">Cerrar sesion</a>
+            <a href="index.php?cart" class="cart">Ver carrito</a>
         </header>
 
         <h3>Catalogo de Productos</h3>
@@ -191,7 +207,10 @@
                     <h4><?= htmlspecialchars($product->getName()); ?></h4>
                     <p><?= htmlspecialchars($product->getDescription()); ?></p>
                     <p class="precio"><?= htmlspecialchars($product->getPrice()) . "€"; ?>
-                    <button>Añadir al Carrito</button>
+                    <form action="index.php" method="POST">
+                        <input type="hidden" name="idProducto" value="<?= $product->getId(); ?>">
+                        <button type="submit" name="add_to_cart">Añadir al Carrito</button>
+                    </form>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

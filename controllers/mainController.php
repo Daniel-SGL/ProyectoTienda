@@ -74,4 +74,50 @@ if (isset($_SESSION['user'])) {
     }
 }
 
+
+if(isset($_POST['add_to_cart']) && isset($_SESSION['user'])){
+    $userId = $_SESSION['user']->getId();
+    $productId = ($_POST['idProducto']);
+
+    $ObtCarrito = $conn->query("SELECT idCarrito FROM Carrito WHERE idUsuario = $userId");
+    if ($row = $ObtCarrito->fetch_assoc()){
+        $idCarrito = $row['idCarrito'];
+    } else {
+        $conn->query("INSERT INTO Carrito (idUsuario) VALUES ($userId)");
+        $idCarrito = $conn->insert_id;
+    }
+
+    $qInsert = "INSERT INTO Carrito_Producto (idCarrito, idProducto, cantidad)
+                    VALUES ($idCarrito, $productId, 1)
+                    ON DUPLICATE KEY UPDATE cantidad = cantidad + 1";
+    $conn->query($qInsert);
+
+    header("Location: index.php?cart");
+    exit();
+}
+
+if (isset($_GET['cart'])) {
+        $userId = $_SESSION['user']->getId();
+        $cartItems = [];
+        $totalPrice = 0;
+
+        $qCart = "SELECT p.idProducto, p.nombre, p.precio, cp.cantidad, (p.precio * cp.cantidad) AS subtotal
+                  FROM Carrito c
+                  JOIN Carrito_Producto cp ON c.idCarrito = cp.idCarrito
+                  JOIN Producto p ON cp.idProducto = p.idProducto
+                  WHERE c.idUsuario = $userId";
+
+        $resCart = $conn->query($qCart);
+
+        if ($resCart) {
+            while ($row = $resCart->fetch_assoc()) {
+                $cartItems[] = $row;
+                $totalPrice += $row['subtotal'];
+            }
+        }
+
+        require_once "views/cartView.phtml";
+        exit();
+    }
+
 require_once "views/mainView.phtml";
