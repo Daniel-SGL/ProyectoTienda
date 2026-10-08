@@ -81,7 +81,7 @@
             <p style="color: red; text-align: center;"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
 
-        <form action="procesar_login.php" method="POST">
+        <form action="index.php?c=user" method="POST">
             <div class="form-group">
                 <label for="correo">Correo electrónico</label>
                 <input type="email" id="correo" name="correo" required placeholder="tu@email.com">
